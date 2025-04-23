@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subcontractor Dashboard - SmartSite</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    /* General Styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 250px;
+      background: #222;
+      color: white;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .sidebar h2 {
+      font-size: 1.5em;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+      width: 100%;
+    }
+    .sidebar ul li {
+      padding: 12px;
+      margin: 8px 0;
+      background: #333;
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
+      transition: 0.3s;
+    }
+    .sidebar ul li:hover {
+      background: #ff6600;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      padding: 40px;
+      background: white;
+      box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      margin: 20px;
+      max-width: 80%;
+    }
+    .main-content h2 {
+      color: #333;
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+    .content-box {
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Chatbot */
+    #chatButton {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #ff6600;
+      color: white;
+      padding: 12px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      z-index: 1000;
+      border: none;
+    }
+    .chat-modal {
+      display: none;
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      background: white;
+      padding: 15px;
+      width: 300px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
+    }
+    .chat-modal.active { display: block; }
+    .chat-close {
+      float: right;
+      background: red;
+      color: white;
+      border: none;
+      padding: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        padding: 10px;
+      }
+      .sidebar ul {
+        display: flex;
+        flex-direction: row;
+      }
+      .sidebar ul li {
+        margin: 5px;
+      }
+      .main-content {
+        width: 100%;
+        max-width: 100%;
+        padding: 20px;
+        margin: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <h2>Subcontractor Dashboard</h2>
+    <ul>
+      <li onclick="showSection('projects')">🏗️ My Projects</li>
+      <li onclick="showSection('payments')">💰 Payments & Invoices</li>
+      <li onclick="showSection('safety')">⚠️ Compliance & Safety</li>
+      <li onclick="showSection('team')">👥 Manage Team</li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <h2>Welcome, Subcontractor</h2>
+    <div id="contentSection" class="content-box">
+      <p>Select an option from the sidebar</p>
+    </div>
+  </main>
+
+  <!-- Chatbox -->
+  <button id="chatButton" onclick="openChat()">💬 Chat with SmartSite AI</button>
+  <div id="chatModal" class="chat-modal">
+    <div class="chat-modal-content">
+      <span class="chat-close" onclick="closeChat()">&times;</span>
+      <h2>SmartSite AI Chat</h2>
+      <div id="chatMessages"></div>
+      <input type="text" id="chatInput" placeholder="Ask me anything about SmartSite..." onkeypress="handleChat(event)">
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    function showSection(section) {
+        const contentSection = document.getElementById("contentSection");
+        if (section === "projects") {
+            contentSection.innerHTML = "<h3>🏗️ My Projects</h3><p>Track ongoing subcontract work.</p>";
+        } else if (section === "payments") {
+            contentSection.innerHTML = "<h3>💰 Payments & Invoices</h3><p>View pending payments and invoices.</p>";
+        } else if (section === "safety") {
+            contentSection.innerHTML = "<h3>⚠️ Compliance & Safety</h3><p>Monitor site safety compliance.</p>";
+        } else if (section === "team") {
+            contentSection.innerHTML = "<h3>👥 Manage Team</h3><p>Assign work to team members.</p>";
+        }
+    }
+    function openChat() { document.getElementById("chatModal").classList.add("active"); }
+    function closeChat() { document.getElementById("chatModal").classList.remove("active"); }
+  </script>
+
+</body>
+</html>

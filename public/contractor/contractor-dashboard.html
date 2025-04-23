@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contractor Dashboard - SmartSite</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+    <!-- HEADER WITH LOGO -->
+    <header>
+        <div class="logo-container">
+            <img src="/images/logo.png" alt="SmartSite Logo" class="logo">
+            <h1>SmartSite Contractor Dashboard</h1>
+        </div>
+    </header>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h2>Dashboard</h2>
+            <ul>
+                <li onclick="showSection('projects')">📊 Project Management</li>
+                <li onclick="showSection('financials')">💰 Financial Reports</li>
+                <li onclick="showSection('suppliers')">📦 Supplier Orders</li>
+                <li onclick="showSection('safety')">⚠️ Safety Compliance</li>
+                <li onclick="showSection('team')">👥 Team Management</li>
+                <li onclick="logout()">🚪 Logout</li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <h2>Welcome, Contractor</h2>
+            <div class="dashboard-widgets">
+                <div class="widget"><h3>📊 Project Overview</h3><p>Monitor ongoing projects.</p></div>
+                <div class="widget"><h3>💰 Financial Reports</h3><p>Track invoices & payments.</p></div>
+                <div class="widget"><h3>📦 Supplier Orders</h3><p>Manage material orders.</p></div>
+                <div class="widget"><h3>⚠️ Safety Compliance</h3><p>Track incidents & regulations.</p></div>
+                <div class="widget"><h3>👥 Team Management</h3><p>Assign and monitor tasks.</p></div>
+            </div>
+
+            <div id="contentSection">
+                <h3>Select an option from the sidebar.</h3>
+            </div>
+        </main>
+    </div>
+
+    <!-- Chatbot -->
+    <button id="chatButton">💬 Chat with AI</button>
+    <div id="chatModal" class="chat-modal">
+        <div class="chat-modal-content">
+            <span class="chat-close" onclick="closeChat()">&times;</span>
+            <h2>SmartSite AI Chat</h2>
+            <div id="chatMessages"></div>
+            <input type="text" id="chatInput" placeholder="Ask anything..." onkeypress="handleChat(event)">
+        </div>
+    </div>
+
+    <script type="module">
+        import { auth } from "/js/firebase-config.js";
+        import { signOut } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+
+        function showSection(section) {
+            const contentSection = document.getElementById("contentSection");
+            const sections = {
+                "projects": "<h3>📊 Project Management</h3><p>Live tracking of all projects.</p>",
+                "financials": "<h3>💰 Financial Reports</h3><p>View invoices and budgets.</p>",
+                "suppliers": "<h3>📦 Supplier Orders</h3><p>Monitor orders & deliveries.</p>",
+                "safety": "<h3>⚠️ Safety Compliance</h3><p>View incident reports.</p>",
+                "team": "<h3>👥 Team Management</h3><p>Assign tasks and roles.</p>",
+            };
+            contentSection.innerHTML = sections[section] || "<h3>Select an option from the sidebar</h3>";
+        }
+
+        async function logout() {
+            try {
+                await signOut(auth);
+                alert("You have been logged out.");
+                window.location.href = "/login.html";
+            } catch (error) {
+                console.error("Logout Error:", error.message);
+            }
+        }
+
+        function openChat() { document.getElementById("chatModal").style.display = "block"; }
+        function closeChat() { document.getElementById("chatModal").style.display = "none"; }
+        document.getElementById("chatButton").addEventListener("click", openChat);
+    </script>
+
+</body>
+</html>

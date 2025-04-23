@@ -1,0 +1,7 @@
+﻿backend/
+*.py
+requirements.txt
+migrations/
+uploads/
+venv/
+.git_backup/

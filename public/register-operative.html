@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join SmartSite - Operative</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/main.js" defer></script>
+  <script type="module" src="/js/firebase-config.js"></script>
+  <script type="module" src="/js/register-operative.js"></script>
+  <style>
+    /* Registration Page Styles */
+    .register-section {
+      padding: 40px 20px;
+      max-width: 600px;
+      margin: 100px auto;
+      background: var(--white);
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .register-section h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 2em;
+    }
+    .register-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .register-form label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    .register-form input {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1em;
+    }
+    .register-form input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+    }
+    .register-form button.btn {
+      padding: 12px;
+      background: var(--primary-color);
+      color: var(--white);
+      border: none;
+      border-radius: 5px;
+      font-size: 1.1em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .register-form button.btn:hover {
+      background: #cc5500;
+    }
+    /* Chatbot */
+    #chatButton {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--primary-color);
+      color: white;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 1500;
+      border: none;
+    }
+    .chat-modal {
+      display: none;
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      background: white;
+      padding: 15px;
+      width: 300px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      z-index: 2000;
+    }
+    /* Footer */
+    footer {
+      text-align: center;
+      background: var(--secondary-color);
+      color: var(--white);
+      padding: 20px;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="logo-container">
+      <a href="/"><img src="/images/logo.png" alt="SmartSite Logo" class="logo"></a>
+    </div>
+    <ul class="nav-links">
+      <li><a href="/" class="nav-box">Home</a></li>
+      <li><a href="/about.html" class="nav-box">About</a></li>
+      <li><a href="/features.html" class="nav-box">Features</a></li>
+      <li><a href="/contact.html" class="nav-box">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Registration Section -->
+  <section class="register-section">
+    <h2>Join SmartSite - Operative</h2>
+    <p>Register as an operative and gain access to SmartSite's AI-powered tools for just £20 per year.</p>
+
+    <form id="registerForm" class="register-form">
+      <label>Your Role</label>
+      <input type="text" value="Operative (£20 per year)" readonly>
+
+      <label for="email">Email Address</label>
+      <input type="email" name="email" id="email" placeholder="Enter Email" required>
+
+      <label for="confirmEmail">Confirm Email Address</label>
+      <input type="email" name="confirmEmail" id="confirmEmail" placeholder="Re-enter Email" required>
+
+      <label for="password">Password</label>
+      <input type="password" name="password" id="password" placeholder="Enter Password" required>
+
+      <label for="confirmPassword">Confirm Password</label>
+      <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Re-enter Password" required>
+
+      <div>
+        <input type="checkbox" id="hmrcBoltOn" name="hmrcBoltOn" value="250">
+        <label for="hmrcBoltOn">Add HMRC Bolt-on (£250)</label>
+      </div>
+
+      <p><strong>Total Subscription:</strong> <span id="totalPrice">£20/year</span></p>
+
+      <div>
+        <input type="checkbox" id="terms" required>
+        <label for="terms">I agree to the <a href="/terms.html">Terms & Conditions</a></label>
+      </div>
+
+      <button type="submit" class="btn">Create Account</button>
+    </form>
+  </section>
+
+  <!-- Chatbox -->
+  <button id="chatButton" onclick="openChat()">💬 Chat with AI</button>
+  <div id="chatModal" class="chat-modal">
+    <div class="chat-modal-content">
+      <span class="chat-close" onclick="closeChat()">&times;</span>
+      <h2>SmartSite AI Chat</h2>
+      <div id="chatMessages"></div>
+      <input type="text" id="chatInput" placeholder="Ask me anything about SmartSite..." onkeypress="handleChat(event)">
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 SmartSite. All rights reserved.</p>
+  </footer>
+
+  <script type="module">
+    import { auth } from "/js/firebase-config.js";
+    import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+
+    document.getElementById("registerForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value;
+      const confirmEmail = document.getElementById("confirmEmail").value;
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+
+      if (email !== confirmEmail) {
+        alert("Emails do not match!");
+        return;
+      }
+      if (password !== confirmPassword) {
+        alert("Passwords do not match!");
+        return;
+      }
+
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          alert("Registration successful! Redirecting to login.");
+          window.location.href = "/login.html";
+        })
+        .catch((error) => {
+          alert(error.message);
+        });
+    });
+
+    // Update Total Subscription
+    document.getElementById("hmrcBoltOn").addEventListener("change", function () {
+      let total = 20;
+      if (this.checked) {
+        total += 250;
+      }
+      document.getElementById("totalPrice").textContent = `£${total}/year`;
+    });
+    <script type="module" src="/js/firebase-config.js"></script>
+<script type="module" src="/js/register-oprative.js"></script>
+
+</body>
+</html>

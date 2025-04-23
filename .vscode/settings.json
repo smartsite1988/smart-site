@@ -1,0 +1,9 @@
+{
+    "terminal.integrated.enableMultiLinePasteWarning": "never",
+    "security.workspace.trust.untrustedFiles": "open",
+    "workbench.startupEditor": "none",
+    "python.analysis.extraPaths": [
+      "${workspaceFolder}/smartsite-clean/backend"
+    ]
+  }
+  

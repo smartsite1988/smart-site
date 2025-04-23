@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+  <title>Register for SmartSite</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f4f4;
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .navbar {
+      background: #222;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .logo-container img {
+      height: 40px;
+    }
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+    }
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 16px;
+    }
+    .registration-info {
+      max-width: 1200px;
+      margin: 100px auto 40px;
+      padding: 0 20px;
+      text-align: center;
+    }
+    .registration-info h2 {
+      font-size: 2.4rem;
+      margin-bottom: 15px;
+    }
+    .registration-info p {
+      font-size: 1.1rem;
+      margin-bottom: 40px;
+    }
+    .roles-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+    }
+    .role-card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 300px;
+      padding: 20px;
+      text-align: left;
+      transition: transform 0.3s ease;
+    }
+    .role-card:hover {
+      transform: translateY(-5px);
+    }
+    .role-card img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+    .role-card h3 {
+      color: #ff6600;
+      margin-bottom: 10px;
+      font-size: 1.3rem;
+    }
+    .role-card ul {
+      margin: 10px 0 15px;
+      padding-left: 20px;
+    }
+    .role-card ul li {
+      margin-bottom: 8px;
+    }
+    .btn {
+      display: inline-block;
+      background: #ff6600;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .btn:hover {
+      background: #cc5500;
+    }
+    footer {
+      background: #222;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: auto;
+    }
+    #chatButton {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #ff6600;
+      color: white;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    .chat-modal {
+      display: none;
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      background: white;
+      width: 320px;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      z-index: 2000;
+    }
+    .chat-modal.active {
+      display: block;
+    }
+    @media (max-width: 768px) {
+      .roles-container {
+        flex-direction: column;
+        padding: 0 10px;
+      }
+      .chat-modal {
+        width: 90%;
+        right: 5%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo-container">
+      <a href="/"><img src="/images/logo.png" alt="SmartSite Logo"></a>
+    </div>
+    <ul class="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/features.html">Features</a></li>
+      <li><a href="/contact.html">Contact</a></li>
+    </ul>
+  </nav>
+
+  <section class="registration-info">
+    <h2>Register for SmartSite</h2>
+    <p>Join SmartSite and choose your role to begin registration.</p>
+    <div class="roles-container">
+      <div class="role-card">
+        <img src="/images/ai-hard-hat.png" alt="Operative">
+        <h3>Operatives</h3>
+        <p>Stay compliant and site-ready.</p>
+        <ul>
+          <li>Instant digital inductions</li>
+          <li>Document access</li>
+          <li>Toolbox talk logs</li>
+        </ul>
+        <a href="/register-operative.html" class="btn">Register</a>
+      </div>
+      <div class="role-card">
+        <img src="/images/hero-dashboard.jpg" alt="Contractor">
+        <h3>Contractors</h3>
+        <p>Manage multiple sites with ease.</p>
+        <ul>
+          <li>Live dashboards</li>
+          <li>Compliance tracking</li>
+          <li>AI site intelligence</li>
+        </ul>
+        <a href="/register-contractor.html" class="btn">Register</a>
+      </div>
+      <div class="role-card">
+        <img src="/images/site-ai.png" alt="Subcontractor">
+        <h3>Subcontractors</h3>
+        <p>Efficient project coordination tools.</p>
+        <ul>
+          <li>Labour planning</li>
+          <li>Task tracking</li>
+          <li>CSCS verification</li>
+        </ul>
+        <a href="/register-subcontractor.html" class="btn">Register</a>
+      </div>
+      <div class="role-card">
+        <img src="/images/supplyer.png" alt="Supplier">
+        <h3>Suppliers</h3>
+        <p>Smart procurement and delivery tools.</p>
+        <ul>
+          <li>Live orders</li>
+          <li>Invoice uploads</li>
+          <li>Delivery tracking</li>
+        </ul>
+        <a href="/register-supplier.html" class="btn">Register</a>
+      </div>
+      <div class="role-card">
+        <img src="/images/architect.png" alt="Architect">
+        <h3>Architects</h3>
+        <p>Version control and design collaboration.</p>
+        <ul>
+          <li>Drawing uploads</li>
+          <li>Project commenting</li>
+          <li>Realtime visibility</li>
+        </ul>
+        <a href="/register-architect.html" class="btn">Register</a>
+      </div>
+    </div>
+  </section>
+
+  <button id="chatButton">💬 Chat with SmartSite AI</button>
+  <div id="chatModal" class="chat-modal">
+    <div class="chat-modal-content">
+      <span class="chat-close" onclick="closeChat()">&times;</span>
+      <h2>SmartSite AI Chat</h2>
+      <div id="chatMessages"></div>
+      <input type="text" id="chatInput" placeholder="Ask me anything about SmartSite..." onkeypress="handleChat(event)">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 SmartSite. All rights reserved.</p>
+  </footer>
+
+  <script src="/js/config.js"></script>
+  <script src="/js/chatbot.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const chatBtn = document.getElementById("chatButton");
+      const chatModal = document.getElementById("chatModal");
+      if (chatBtn && chatModal) {
+        chatBtn.addEventListener("click", () => {
+          chatModal.classList.toggle("active");
+        });
+      }
+    });
+    function closeChat() {
+      document.getElementById("chatModal").classList.remove("active");
+    }
+    function handleChat(e) {
+      if (e.key === "Enter") sendMessage();
+    }
+  </script>
+</body>
+</html>

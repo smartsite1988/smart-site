@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Architect Dashboard - SmartSite</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2>Architect Dashboard</h2>
+      <ul>
+        <li onclick="showSection('drawings')">📐 Upload Drawings</li>
+        <li onclick="showSection('changes')">📝 Track Changes</li>
+        <li onclick="showSection('collaboration')">💬 Collaboration</li>
+        <li onclick="showSection('documents')">📂 Site Documents</li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <h2>Welcome, Architect</h2>
+      <div id="contentSection">
+        <p>Select an option from the sidebar</p>
+      </div>
+    </main>
+  </div>
+
+  <!-- Chatbox -->
+  <button id="chatButton" onclick="openChat()">💬 Chat with SmartSite AI</button>
+  <div id="chatModal" class="chat-modal">
+    <div class="chat-modal-content">
+      <span class="chat-close" onclick="closeChat()">&times;</span>
+      <h2>SmartSite AI Chat</h2>
+      <div id="chatMessages"></div>
+      <input type="text" id="chatInput" placeholder="Ask me anything about SmartSite..." onkeypress="handleChat(event)">
+    </div>
+  </div>
+
+  <script>
+    function showSection(section) {
+        document.getElementById("contentSection").innerHTML = `<h3>${section}</h3><p>Content for ${section}.</p>`;
+    }
+    function openChat() { document.getElementById("chatModal").style.display = "block"; }
+    function closeChat() { document.getElementById("chatModal").style.display = "none"; }
+  </script>
+
+</body>
+</html>

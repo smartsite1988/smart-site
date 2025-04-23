@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <title>SmartSite | AI Construction Management</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      background: #f4f4f4;
+      color: #333;
+    }
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background: #000;
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: bold;
+    }
+    header {
+      background: url('/images/site-ai.png') center/cover no-repeat;
+      color: white;
+      text-align: center;
+      padding: 100px 20px 60px;
+    }
+    header h1 {
+      font-size: 3rem;
+    }
+    header p {
+      font-size: 1.2rem;
+      max-width: 800px;
+      margin: auto;
+    }
+    .features-section {
+      padding: 50px 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+    .features-section h2 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 30px;
+    }
+    .feature-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .feature-card {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+    .feature-card img {
+      width: 60px;
+      margin-bottom: 15px;
+    }
+    .feature-card h3 {
+      color: #ff6600;
+      margin-bottom: 10px;
+    }
+    .feature-card p {
+      font-size: 0.95rem;
+      color: #555;
+    }
+    footer {
+      background: #000;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 0.9rem;
+      margin-top: 40px;
+    }
+    .chatbot {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+    .chatbot button {
+      background: #ff6600;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    @media (max-width: 768px) {
+      header h1 { font-size: 2rem; }
+      .feature-card { padding: 15px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div><img src="/images/logo.png" alt="SmartSite Logo" height="40"></div>
+    <div>
+      <a href="/">Home</a>
+      <a href="/about.html">About</a>
+      <a href="/features.html">Features</a>
+      <a href="/register.html">Register</a>
+    </div>
+  </nav>
+
+  <header>
+    <h1>SmartSite: Revolutionising Construction with AI</h1>
+    <p>SmartSite connects suppliers, operatives, subcontractors, and architects in a seamless AI-powered management system that enhances productivity, compliance, and collaboration on site.</p>
+  </header>
+
+  <section class="features-section">
+    <h2>Core Features</h2>
+    <div class="feature-cards">
+      <div class="feature-card">
+        <img src="/images/site-mangement.png" alt="Tracking">
+        <h3>AI-Powered Project Tracking</h3>
+        <p>Automatically update project milestones and schedules with real-time insights and smart forecasting.</p>
+      </div>
+      <div class="feature-card">
+        <img src="/images/ai-hat.png" alt="CSCS">
+        <h3>Operative Portals</h3>
+        <p>Store competency cards, complete inductions, and manage qualifications via individual smart portals.</p>
+      </div>
+      <div class="feature-card">
+        <img src="/images/compliance.png" alt="Compliance">
+        <h3>Subcontractor Dashboard</h3>
+        <p>Centralise safety, quality, buying and audit documentation in one smart, mobile-friendly platform.</p>
+      </div>
+      <div class="feature-card">
+        <img src="/images/document-mangement.png" alt="Toolbox">
+        <h3>Digital Toolbox Talks</h3>
+        <p>Conduct safety talks and briefings paperlessly, improving compliance and time on site.</p>
+      </div>
+      <div class="feature-card">
+        <img src="/images/architect.png" alt="Drawings">
+        <h3>Smart Drawing Management</h3>
+        <p>Architects upload drawings, AI archives revisions, and notifies teams automatically of design changes.</p>
+      </div>
+      <div class="feature-card">
+        <img src="/images/site-docs.png" alt="Live">
+        <h3>Live Site Communication</h3>
+        <p>Broadcast alerts, task updates and issues across your teams instantly with our live site chat and alerts.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 SmartSite. Built for smarter, safer, and more efficient sites.</p>
+  </footer>
+
+  <div class="chatbot">
+    <button onclick="document.getElementById('chatModal').classList.toggle('active')">💬 Chat with SmartSite AI</button>
+  </div>
+  <div id="chatModal" class="chat-modal">
+    <div class="chat-modal-content">
+      <span class="chat-close" onclick="document.getElementById('chatModal').classList.remove('active')">&times;</span>
+      <h3>SmartSite AI Chat</h3>
+      <div id="chatMessages"></div>
+      <input type="text" id="chatInput" placeholder="Ask me anything about SmartSite..." onkeypress="handleChat(event)">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script src="/js/config.js"></script>
+  <script src="/js/chatbot.js"></script>
+</body>
+</html>

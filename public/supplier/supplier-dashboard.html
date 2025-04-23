@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supplier Dashboard - SmartSite</title>
+    <link rel="stylesheet" href="/css/global.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <img src="/images/logo.png" alt="SmartSite Logo" class="logo">
+        </div>
+        <div class="header-title">Supplier Dashboard</div>
+    </header>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <h2>Dashboard</h2>
+            <ul>
+                <li onclick="navigateTo('supplier-orders.html')"><i class="fas fa-box"></i> Orders</li>
+                <li onclick="navigateTo('supplier-invoices.html')"><i class="fas fa-file-invoice"></i> Invoices</li>
+                <li onclick="navigateTo('supplier-stock.html')"><i class="fas fa-warehouse"></i> Stock Management</li>
+                <li onclick="navigateTo('supplier-compliance.html')"><i class="fas fa-shield-alt"></i> Compliance</li>
+                <li onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <h2>Welcome, Supplier</h2>
+            <div class="dashboard-widgets">
+                <div class="widget"><i class="fas fa-box"></i> <h3>Orders</h3> <p>View and manage supplier orders.</p></div>
+                <div class="widget"><i class="fas fa-file-invoice"></i> <h3>Invoices</h3> <p>Track payments and billing.</p></div>
+                <div class="widget"><i class="fas fa-warehouse"></i> <h3>Stock</h3> <p>Manage inventory and materials.</p></div>
+                <div class="widget"><i class="fas fa-shield-alt"></i> <h3>Compliance</h3> <p>Ensure supplier certifications are valid.</p></div>
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        <button onclick="navigateTo('/index.html')">Back to Main Menu</button>
+        <p>&copy; 2025 SmartSite. All rights reserved.</p>
+    </footer>
+
+    <script src="/js/global.js"></script>
+
+</body>
+</html>

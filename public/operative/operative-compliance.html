@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Operative Compliance</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Operative Compliance Portal</h1>
+
+    <section id="rams-section">
+      <h2>Read & Sign RAMS</h2>
+      <iframe src="/docs/rams-latest.pdf" width="100%" height="400"></iframe>
+      <button onclick="signDocument('RAMS')">I have read and understood the RAMS</button>
+    </section>
+
+    <section id="toolbox-section">
+      <h2>Read & Sign Toolbox Talk</h2>
+      <iframe src="/docs/toolbox-latest.pdf" width="100%" height="400"></iframe>
+      <button onclick="signDocument('Toolbox Talk')">I have read and understood the Toolbox Talk</button>
+    </section>
+
+    <div id="confirmation" style="display: none;"></div>
+  </div>
+
+  <script>
+    async function signDocument(docType) {
+      const operativeId = localStorage.getItem('operativeId'); // assumed stored on login
+
+      if (!operativeId) {
+        alert("Operative not logged in.");
+        return;
+      }
+
+      const response = await fetch('/api/sign', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          operativeId,
+          docType,
+          timestamp: new Date().toISOString()
+        })
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        document.getElementById("confirmation").style.display = "block";
+        document.getElementById("confirmation").innerHTML =
+          `<p>✅ Successfully signed the ${docType}. Saved to your subcontractor record.</p>`;
+      } else {
+        alert("Failed to sign document. Please try again.");
+      }
+    }
+  </script>
+</body>
+</html>

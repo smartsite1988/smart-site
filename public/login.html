@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - SmartSite</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+    }
+
+    .navbar {
+      background: #222;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar a {
+      color: #fff;
+      margin: 0 10px;
+      text-decoration: none;
+    }
+
+    .hero {
+      background: url('/images/hero-dashboard.jpg') no-repeat center center;
+      background-size: cover;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .login-box {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background: #ff6600;
+      color: white;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #cc5500;
+    }
+
+    .chatbot-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #ff6600;
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 1000;
+    }
+
+    .chat-modal {
+      display: none;
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      width: 300px;
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      z-index: 1100;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div><a href="/">SmartSite</a></div>
+    <div>
+      <a href="/">Home</a>
+      <a href="/features.html">Features</a>
+      <a href="/register.html">Register</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="login-box">
+      <h2>SmartSite – Secure Login</h2>
+      <form id="loginForm">
+        <input type="email" id="email" placeholder="Email" required />
+        <input type="password" id="password" placeholder="Password" required />
+        <button type="submit">Log In</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ✅ Chatbot -->
+  <button id="chatButton" class="chatbot-toggle">💬 Chat with SmartSite AI</button>
+  <div id="chatModal" class="chat-modal">
+    <h3>SmartSite AI Chat</h3>
+    <div id="chatMessages"></div>
+    <input type="text" id="chatInput" placeholder="Ask me anything..." onkeypress="if(event.key==='Enter'){sendMessage()}" />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+
+  <script src="/js/firebase-config.js" type="module"></script>
+  <script src="/js/login.js" type="module"></script>
+  <script src="/js/config.js"></script>
+  <script src="/js/chatbot.js"></script>
+  <script>
+    document.getElementById("chatButton").addEventListener("click", () => {
+      document.getElementById("chatModal").classList.toggle("active");
+      document.getElementById("chatModal").style.display = "block";
+    });
+  </script>
+</body>
+</html>

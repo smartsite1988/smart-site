@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HMRC Platform - SmartSite</title>
+  <link rel="stylesheet" href="/css/smartsite-theme.css" />
+  <style>
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-group label {
+      display: block;
+      font-weight: bold;
+    }
+    input[type="file"],
+    input[type="text"],
+    input[type="password"] {
+      padding: 10px;
+      width: 100%;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: var(--primary);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #e65400;
+    }
+    .tips ul {
+      padding-left: 20px;
+    }
+    .tax-summary {
+      margin-top: 1rem;
+      background: var(--white);
+      padding: 1rem;
+      border-radius: var(--radius);
+    }
+    .scan-preview img {
+      max-height: 150px;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar and Header -->
+  <div id="sidebar"></div>
+  <div id="header"></div>
+
+  <!-- Main Content -->
+  <main class="content">
+    <div class="card">
+      <h2>📂 Upload Your Receipts</h2>
+      <form id="receiptForm">
+        <div class="form-group">
+          <label for="receipts">Choose Receipt Images (JPG, PNG, PDF)</label>
+          <input type="file" id="receipts" name="receipts" multiple accept="image/*,.pdf" />
+        </div>
+        <button type="submit">Upload</button>
+      </form>
+
+      <div class="scan-preview" id="preview"></div>
+    </div>
+
+    <div class="card">
+      <h2>💸 Payslips & Remittance</h2>
+      <ul>
+        <li><a href="#">Download Payslip - March 2025</a></li>
+        <li><a href="#">Download Remittance - March 2025</a></li>
+      </ul>
+    </div>
+
+    <div class="card tax-summary">
+      <h2>📊 Estimated Tax Return</h2>
+      <p><strong>Total Income:</strong> £42,500</p>
+      <p><strong>Claimable Expenses:</strong> £3,200</p>
+      <p><strong>Estimated Tax:</strong> £7,100</p>
+      <button>Download Return PDF</button>
+    </div>
+
+    <div class="card">
+      <h2>🔐 Connect to HMRC</h2>
+      <form id="hmrcForm">
+        <div class="form-group">
+          <label for="gatewayId">Government Gateway ID</label>
+          <input type="text" id="gatewayId" />
+        </div>
+        <div class="form-group">
+          <label for="gatewayPass">Password</label>
+          <input type="password" id="gatewayPass" />
+        </div>
+        <button type="submit">Link My HMRC</button>
+      </form>
+      <p>End-to-end encrypted. GDPR & HMRC Compliant.</p>
+    </div>
+
+    <div class="card tips">
+      <h2>💡 Smart Tax Tips</h2>
+      <ul>
+        <li>Use your mileage, food, and toll receipts to boost claims.</li>
+        <li>Upload remittances or payslips as proof of income.</li>
+        <li>Get tax estimates in real time.</li>
+        <li>AI checks common errors before you submit to HMRC.</li>
+      </ul>
+    </div>
+  </main>
+
+  <script>
+    fetch('/includes/sidebar.html').then(r => r.text()).then(html => {
+      document.getElementById('sidebar').innerHTML = html;
+    });
+    fetch('/includes/header.html').then(r => r.text()).then(html => {
+      document.getElementById('header').innerHTML = html;
+    });
+
+    document.getElementById('receiptForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const files = document.getElementById('receipts').files;
+      let preview = document.getElementById('preview');
+      preview.innerHTML = '';
+      Array.from(files).forEach(file => {
+        if (file.type.includes('image')) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            preview.appendChild(img);
+          };
+          reader.readAsDataURL(file);
+        } else {
+          preview.innerHTML += `<p>📄 PDF File Uploaded: ${file.name}</p>`;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

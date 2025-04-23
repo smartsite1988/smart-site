@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SmartSite | Operative Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    body { margin: 0; font-family: Arial, sans-serif; background: #f4f4f4; }
+    .header {
+      background: #ff6600;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      font-size: 22px;
+    }
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 2rem;
+    }
+    .card {
+      background: white;
+      padding: 1.2rem;
+      width: 220px;
+      text-align: center;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: 0.2s ease-in-out;
+      cursor: pointer;
+    }
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    }
+    .card i {
+      font-size: 34px;
+      margin-bottom: 10px;
+      color: #ff6600;
+    }
+    .card h3 {
+      margin: 0;
+      font-size: 16px;
+      color: #111;
+    }
+
+    @media (max-width: 768px) {
+      .grid {
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem;
+      }
+      .card {
+        width: 90%;
+        max-width: 300px;
+      }
+      .header {
+        font-size: 20px;
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">🦺 SmartSite Operative Dashboard</div>
+
+  <div class="grid">
+    <div class="card" onclick="location.href='training matrix.html'">
+      <i class="fa fa-graduation-cap"></i>
+      <h3>Training Matrix</h3>
+    </div>
+
+    <div class="card" onclick="location.href='operative-profile.html'">
+      <i class="fa fa-user"></i>
+      <h3>My Profile</h3>
+    </div>
+
+    <div class="card" onclick="location.href='operative-documents.html'">
+      <i class="fa fa-folder-open"></i>
+      <h3>Site Documents</h3>
+    </div>
+
+    <div class="card" onclick="location.href='operative-settings.html'">
+      <i class="fa fa-cog"></i>
+      <h3>Settings</h3>
+    </div>
+
+    <div class="card" onclick="location.href='operative-payslips.html'">
+      <i class="fa fa-file-invoice-dollar"></i>
+      <h3>Payslips</h3>
+    </div>
+
+    <div class="card" onclick="alert('You have been logged out.')">
+      <i class="fa fa-sign-out-alt"></i>
+      <h3>Logout</h3>
+    </div>
+  </div>
+
+</body>
+</html>

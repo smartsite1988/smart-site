@@ -1,0 +1,35 @@
+import os
+import base64
+from flask import Blueprint, request, jsonify
+from datetime import datetime
+
+save_signature = Blueprint("save_signature", __name__)
+
+SIGNATURE_FOLDER = os.path.join(os.getcwd(), "signed_docs")
+os.makedirs(SIGNATURE_FOLDER, exist_ok=True)
+
+@save_signature.route("/api/save-signature", methods=["POST"])
+def save_signature_route():
+    data = request.get_json()
+    name = data.get("name")
+    signature_data = data.get("signature")
+    document_id = data.get("documentId", "unknown")
+
+    if not name or not signature_data:
+        return jsonify({"error": "Name and signature required."}), 400
+
+    # Extract image data
+    header, encoded = signature_data.split(",", 1)
+    signature_binary = base64.b64decode(encoded)
+
+    # Create unique filename per document
+    date_str = datetime.utcnow().strftime("%Y%m%d%H%M%S")
+    filename = f"{document_id}_{name.replace(' ', '_')}_{date_str}.png"
+    filepath = os.path.join(SIGNATURE_FOLDER, filename)
+
+    try:
+        with open(filepath, "wb") as f:
+            f.write(signature_binary)
+        return jsonify({"success": True, "filename": filename})
+    except Exception as e:
+        return jsonify({"success": False, "error": str(e)}), 500

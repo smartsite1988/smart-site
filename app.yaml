@@ -1,0 +1,7 @@
+runtime: nodejs18
+env: standard
+instance_class: F1
+handlers:
+  - url: /.*
+    static_files: public/index.html
+    upload: public/index.html

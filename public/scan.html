@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSCS & Certificate Scanning - SmartSite</title>
+    <script src="/js/card-scanner.js" defer></script>
+</head>
+<body>
+
+    <h2>Scan Your CSCS or Certification Card</h2>
+
+    <video id="cameraPreview" autoplay></video>
+    <img id="uploadedImage" style="max-width: 300px; transform: rotate(0deg);">
+    <canvas id="canvas" style="display:none;"></canvas>
+
+    <button onclick="rotateImage()">Rotate Image</button>
+    <button id="scanButton">Scan</button>
+
+    <h3>Card Details:</h3>
+    <p><strong>Name:</strong> <span id="cardName">Not Found</span></p>
+    <p><strong>Card Number:</strong> <span id="cardNumber">Not Found</span></p>
+    <p><strong>Expiry Date:</strong> <span id="expiryDate">Not Found</span></p>
+
+</body>
+</html>

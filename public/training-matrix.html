@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartSite Training Matrix</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>📊 SmartSite Training Matrix</h1>
+
+  <!-- Upload Section -->
+  <section>
+    <h2>Upload CSCS Card</h2>
+    <form id="uploadForm">
+      <input type="file" name="front" required />
+      <input type="file" name="back" />
+      <button type="submit">Upload</button>
+    </form>
+    <div id="uploadStatus"></div>
+  </section>
+
+  <!-- Matrix Display -->
+  <section>
+    <h2>🔗 Training Matrix</h2>
+    <table border="1" id="matrix">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Job Title</th>
+          <th>Certificates</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <!-- Chatbot Section -->
+  <section>
+    <h2>🧑‍🤖 Ask SmartSite AI</h2>
+    <input type="text" id="chatInput" placeholder="Ask a question about SmartSite..." />
+    <button onclick="askChat()">Ask</button>
+    <div id="chatResponse"></div>
+  </section>
+
+  <script>
+    // Upload handler
+    document.getElementById("uploadForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const form = new FormData(e.target);
+      const response = await fetch("http://localhost:5000/upload-cscs", {
+        method: "POST",
+        body: form
+      });
+      const data = await response.json();
+      document.getElementById("uploadStatus").innerText = data.message;
+      fetchMatrix();
+    });
+
+    // Matrix loader
+    async function fetchMatrix() {
+      const res = await fetch("http://localhost:5000/training-matrix");
+      const matrix = await res.json();
+      const tbody = document.querySelector("#matrix tbody");
+      tbody.innerHTML = "";
+      matrix.forEach(op => {
+        const certs = op.certificates.map(c => `${c.name} (${c.expiry})`).join(", ");
+        tbody.innerHTML += `<tr><td>${op.name}</td><td>${op.job_title}</td><td>${certs}</td></tr>`;
+      });
+    }
+
+    // Chat handler
+    async function askChat() {
+      const question = document.getElementById("chatInput").value;
+      const res = await fetch("http://localhost:5000/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: question })
+      });
+      const result = await res.json();
+      document.getElementById("chatResponse").innerText = result.response;
+    }
+
+    fetchMatrix();
+  </script>
+</body>
+</html>

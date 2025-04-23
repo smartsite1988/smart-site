@@ -1,0 +1,13 @@
+<div class="signature-container max-w-xl mx-auto mt-10">
+    <h2 class="text-xl font-bold mb-2">Please Sign to Confirm You've Read This Document</h2>
+    <canvas id="signature-pad" class="border rounded w-full h-64 bg-white"></canvas>
+  
+    <div class="mt-4 flex flex-col sm:flex-row gap-2">
+      <input type="text" id="operative-name" placeholder="Your Full Name" class="border px-3 py-2 rounded w-full sm:w-1/2">
+      <button onclick="clearSignature()" class="bg-gray-500 text-white px-4 py-2 rounded">Clear</button>
+      <button onclick="submitSignature()" class="bg-green-600 text-white px-4 py-2 rounded">Submit</button>
+    </div>
+  
+    <p id="signature-status" class="text-sm mt-2 text-gray-600"></p>
+  </div>
+  

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SmartSite AI Chat</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .chat-container {
+            width: 100%;
+            max-width: 400px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            margin: auto;
+            text-align: left;
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+        }
+        .chat-box {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .send-button {
+            width: 100%;
+            padding: 10px;
+            background: #ff6600;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <button onclick="openChat()">💬 Chat with SmartSite AI</button>
+
+    <div id="chatContainer" class="chat-container">
+        <h2>SmartSite AI Chat</h2>
+        <button onclick="closeChat()" style="float: right; background: red; color: white; border: none; padding: 5px; cursor: pointer;">❌</button>
+        <div id="chatMessages" class="chat-box">
+            <div class="ai-message"><strong>AI:</strong> Hello! How can I help you today?</div>
+        </div>
+        <input type="text" id="chatInput" class="chat-input" placeholder="Type a message...">
+        <button class="send-button" onclick="sendMessage()">Send</button>
+    </div>
+
+    <script src="/js/chatbot.js"></script>
+</body>
+</html>

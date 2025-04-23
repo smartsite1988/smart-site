@@ -1,0 +1,394 @@
+<<<<<<< HEAD
+/** File: public/css/style.css (Synced to dashboard theme) */
+
+/* Base Reset */
+=======
+/* CSS Reset */
+>>>>>>> 26616ec7163e1ab66128b818b6695dca44533352
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+<<<<<<< HEAD
+  }
+  
+  :root {
+    --orange: #ff6600;
+    --yellow: #ffc107;
+    --dark: #222;
+    --light: #f4f4f4;
+    --white: #fff;
+    --font: 'Segoe UI', Arial, sans-serif;
+    --radius: 8px;
+  }
+  
+  body {
+    font-family: var(--font);
+    background: var(--light);
+    color: var(--dark);
+    line-height: 1.5;
+  }
+  
+  h1, h2, h3 {
+    color: var(--orange);
+    margin-bottom: 10px;
+  }
+  
+  h1 span, h2 span { color: var(--yellow); }
+  
+  .container {
+    max-width: 1000px;
+    margin: 30px auto;
+    background: var(--white);
+    padding: 20px;
+    border-radius: var(--radius);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+  
+  label {
+    font-weight: bold;
+    margin-top: 10px;
+    display: block;
+  }
+  
+  input, select, button, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: var(--radius);
+    font-size: 16px;
+  }
+  
+  button {
+    background: var(--orange);
+    color: var(--white);
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  button:hover {
+    background: var(--yellow);
+    color: var(--dark);
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  
+  .table th, .table td {
+    padding: 12px;
+    border: 1px solid #ccc;
+  }
+  
+  .table th {
+    background: var(--orange);
+    color: var(--white);
+  }
+  
+  img.preview {
+    max-width: 100px;
+    border-radius: var(--radius);
+    margin-top: 10px;
+  }
+  
+  ul li {
+    margin-bottom: 8px;
+  }
+  
+  @media (max-width: 768px) {
+    .container {
+      margin: 15px;
+      padding: 15px;
+    }
+  
+    button {
+      width: 100%;
+    }
+  
+    .table th, .table td {
+      font-size: 14px;
+    }
+  }
+  
+=======
+}
+  
+/* CSS Variables */
+:root {
+    --primary-color: #ff6600;
+    --secondary-color: #222;
+    --light-bg: #f4f4f4;
+    --white: #fff;
+    --text-color: #333;
+    --border-radius: 8px;
+    --transition-speed: 0.3s;
+    --font-family: 'Arial', sans-serif;
+}
+  
+/* Global Styles */
+body {
+    font-family: var(--font-family);
+    background-color: var(--light-bg);
+    color: var(--text-color);
+    overflow-x: hidden;
+    line-height: 1.6;
+    -webkit-overflow-scrolling: touch; /* Improves touch scrolling */
+    overscroll-behavior: contain; /* Prevents excessive bounce on iOS */
+}
+  
+/* Generic Section Spacing */
+.section {
+    margin-bottom: 50px;
+}
+
+/* Touch Optimization for Mobile */
+button, .btn {
+    touch-action: manipulation;
+    min-height: 44px;
+    min-width: 44px;
+}
+
+/* Ensure text remains readable on iOS Safari */
+input, textarea {
+    font-size: 16px; /* Prevents Safari zooming when clicking input fields */
+}
+  
+/* Links */
+a {
+    text-decoration: none;
+    color: var(--primary-color);
+    transition: color var(--transition-speed);
+}
+a:hover {
+    color: var(--secondary-color);
+}
+  
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 30px;
+    background-color: var(--secondary-color);
+    color: var(--white);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 60px;
+    z-index: 1000;
+    transition: all 0.3s ease-in-out;
+}
+
+.navbar .logo-container img {
+    height: 50px;
+}
+.nav-links {
+    display: flex;
+    list-style: none;
+    align-items: center;
+}
+.nav-links li {
+    margin: 0 5px;
+}
+
+/* Mobile-Friendly Navigation */
+@media (max-width: 768px) {
+    .navbar {
+        height: 50px; /* Reduce navbar height for small screens */
+    }
+
+    .nav-links {
+        flex-direction: column;
+        position: absolute;
+        top: 50px;
+        left: 0;
+        background: var(--secondary-color);
+        width: 100%;
+        display: none;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+}
+
+/* Authentication Buttons */
+.auth-buttons .btn {
+    padding: 8px 16px;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border-radius: var(--border-radius);
+    font-weight: bold;
+    margin-left: 10px;
+    transition: background var(--transition-speed);
+}
+.auth-buttons .btn.secondary {
+    background-color: var(--white);
+    color: var(--secondary-color);
+    border: 1px solid var(--secondary-color);
+}
+
+/* Split Layout (About, Features, etc.) */
+.split-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 50px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+.text-content {
+    flex: 1;
+    padding-right: 20px;
+    min-width: 300px;
+}
+.image-content {
+    flex: 1;
+    min-width: 300px;
+}
+.image-content img {
+    width: 100%;
+    border-radius: var(--border-radius);
+}
+
+/* Mission & Vision Section */
+.mission-vision {
+    background: url('/images/mission.jpg') no-repeat center center/cover;
+    color: var(--white);
+    padding: 60px 20px;
+    text-align: center;
+    position: relative;
+}
+.mission-vision::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1;
+}
+.mission-vision .content {
+    position: relative;
+    z-index: 2;
+}
+
+/* Team Section */
+.team-grid {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+.team-card {
+    flex: 1 1 calc(33.333% - 20px);
+    background: var(--white);
+    padding: 20px;
+    border-radius: var(--border-radius);
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    min-width: 250px;
+}
+
+/* Values Section */
+.values-list {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+.value-item {
+    flex: 1 1 calc(25% - 20px);
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    text-align: center;
+    min-width: 200px;
+}
+
+/* Call-to-Action Section */
+.cta-section {
+    background: var(--light-bg);
+    text-align: center;
+    padding: 60px 20px;
+    margin-top: 80px;
+}
+.cta-section .btn {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 12px 25px;
+    border-radius: var(--border-radius);
+    font-weight: bold;
+    transition: background var(--transition-speed);
+}
+
+/* Footer */
+footer {
+    background: var(--secondary-color);
+    color: var(--white);
+    padding: 20px;
+    text-align: center;
+    margin-top: 50px;
+}
+
+/* Form Styles for Registration & Login */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: var(--text-color);
+}
+form input,
+form select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius);
+    font-size: 1em;
+}
+form input:focus,
+form select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+form button.btn {
+    padding: 12px;
+    background: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background var(--transition-speed);
+}
+form button.btn:hover {
+    background: #cc5500;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .split-container {
+        flex-direction: column;
+        padding: 30px 10px;
+    }
+    .nav-links li {
+        margin: 0 5px;
+    }
+    .team-card, .value-item {
+        flex: 1 1 90%;
+    }
+}
+>>>>>>> 26616ec7163e1ab66128b818b6695dca44533352
