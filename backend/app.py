@@ -1,6 +1,5 @@
 import os
 import uuid
-import json
 import base64
 from flask import Flask, request, jsonify, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
@@ -12,40 +11,46 @@ from firebase_admin import credentials
 from werkzeug.utils import secure_filename
 import openai
 
-# Load .env
+# Load environment variables
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
 
-# Firebase from base64
-firebase_key_b64 = os.getenv("FIREBASE_KEY_B64")
-if not firebase_key_b64:
-    raise Exception("FIREBASE_KEY_B64 not set")
+# --- CONFIGURE CORS ---
+CORS(app, origins=[
+    "https://www.smartsite-app.com",
+    "https://smartsite-mvp-de16b70f49d2.herokuapp.com",
+    "http://localhost:5500"
+])
 
-firebase_key_json = base64.b64decode(firebase_key_b64).decode("utf-8")
-key_path = os.path.join(os.getcwd(), "firebase-key.json")
-with open(key_path, "w") as f:
-    f.write(firebase_key_json)
+# --- CONFIGURE UPLOADS ---
+UPLOAD_FOLDER = os.path.join(os.getcwd(), "uploads")
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
-# Set env var and initialize Firebase if not already done
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = key_path
-if not firebase_admin._apps:
-    cred = credentials.Certificate(key_path)
-    firebase_admin.initialize_app(cred)
-
-# Uploads folder
-app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), "uploads")
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-
-# Database
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("SQLALCHEMY_DATABASE_URI")
+# --- CONFIGURE DATABASE ---
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("SQLALCHEMY_DATABASE_URI", "sqlite:///site.db")
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
-# OpenAI key
+# --- INITIALIZE FIREBASE FROM BASE64 ---
+firebase_key_b64 = os.getenv("FIREBASE_KEY_B64")
+if not firebase_key_b64:
+    raise Exception("FIREBASE_KEY_B64 is not set in .env")
+
+firebase_json_path = os.path.join(os.getcwd(), "firebase-key.json")
+with open(firebase_json_path, "w") as f:
+    f.write(base64.b64decode(firebase_key_b64).decode("utf-8"))
+
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = firebase_json_path
+if not firebase_admin._apps:
+    cred = credentials.Certificate(firebase_json_path)
+    firebase_admin.initialize_app(cred)
+
+# --- OPENAI API KEY ---
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-# ---------- MODELS ----------
+# --- MODELS ---
 class Operative(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
@@ -54,44 +59,32 @@ class Operative(db.Model):
     qualifications = db.Column(db.Text)
     image_path = db.Column(db.String(255))
 
-# ---------- ROUTES ----------
+# --- ROUTES ---
 @app.route("/")
-def index():
-    return "<h1>✅ SmartSite Backend is Live!</h1><p>Ready to receive requests.</p>"
+def home():
+    return "<h2>✅ SmartSite API is Live</h2>"
 
 @app.route("/scan", methods=["POST"])
 def scan_card():
+    if "image" not in request.files:
+        return jsonify({"error": "No image uploaded."}), 400
+
+    image = request.files["image"]
+    filename = f"{uuid.uuid4()}_{secure_filename(image.filename)}"
+    path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+    image.save(path)
+
     try:
-        if "image" not in request.files:
-            return jsonify({"error": "No image file uploaded"}), 400
-
-        image = request.files["image"]
-        filename = str(uuid.uuid4()) + "_" + secure_filename(image.filename)
-        filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
-        image.save(filepath)
-
-        print(f"📷 Saved image to: {filepath}")
-
         client = vision.ImageAnnotatorClient()
-        with open(filepath, "rb") as img:
+        with open(path, "rb") as img:
             content = img.read()
 
-        image_obj = vision.Image(content=content)
-        response = client.text_detection(image=image_obj)
-
-        if response.error.message:
-            raise Exception(f"Vision API Error: {response.error.message}")
-
+        response = client.text_detection(image=vision.Image(content=content))
         texts = response.text_annotations
         extracted_text = texts[0].description if texts else ""
 
-        print("🔍 Extracted Text:", extracted_text)
-
-        # Simulated logic for now
-        name = "Unknown"
-        if "Smith" in extracted_text:
-            name = "John Smith"
-
+        # Demo data until full OCR parser is live
+        name = "John Smith" if "Smith" in extracted_text else "Unknown"
         card_number = "123456789"
         expiry = "01/01/2026"
         qualifications = "Site Supervisor, First Aid"
@@ -101,7 +94,7 @@ def scan_card():
             card_number=card_number,
             expiry_date=expiry,
             qualifications=qualifications,
-            image_path=filepath
+            image_path=path
         )
         db.session.add(op)
         db.session.commit()
@@ -111,46 +104,34 @@ def scan_card():
             "cardNumber": op.card_number,
             "expiry": op.expiry_date,
             "qualifications": op.qualifications,
-            "imageUrl": f"/uploads/{filename}"
+            "imageUrl": f"{request.host_url}uploads/{filename}"
         })
 
     except Exception as e:
-        print(f"❌ Error during /scan: {e}")
+        print("❌ Vision API error:", e)
         return jsonify({"error": str(e)}), 500
 
 @app.route("/chat", methods=["POST"])
-def chat_bot():
+def chat():
+    message = request.json.get("message", "").strip()
+    if not message:
+        return jsonify({"error": "No message provided."}), 400
+
     try:
-        message = request.json.get("message", "")
-        if not message:
-            return jsonify({"error": "Message required"}), 400
-
-        static_responses = {
-            "What is SmartSite?": "SmartSite is an AI-driven construction management platform.",
-            "Who is SmartSite for?": "Contractors, site teams, suppliers and more.",
-        }
-
-        for q, a in static_responses.items():
-            if message.lower() in q.lower():
-                return jsonify({"response": a})
-
-        gpt_reply = openai.ChatCompletion.create(
+        response = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[{"role": "user", "content": message}]
         )
-
-        return jsonify({"response": gpt_reply.choices[0].message.content})
-
+        return jsonify({"response": response.choices[0].message.content})
     except Exception as e:
-        print(f"❌ Error in /chat: {e}")
         return jsonify({"error": str(e)}), 500
 
 @app.route("/uploads/<filename>")
-def serve_upload(filename):
+def serve_file(filename):
     return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
 
-# ---------- MAIN ----------
+# --- MAIN ENTRY ---
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000, debug=False)

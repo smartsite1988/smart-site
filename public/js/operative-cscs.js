@@ -28,7 +28,7 @@ function takePhoto() {
   }, "image/jpeg");
 }
 
-function scanCard() {
+async function scanCard() {
   const input = document.getElementById("cardInput");
   if (!input.files.length) {
     alert("Please upload or capture a card image.");
@@ -38,24 +38,28 @@ function scanCard() {
   const formData = new FormData();
   formData.append("image", input.files[0]);
 
-  fetch("https://smartsite-mvp-de16b70f49d2.herokuapp.com/scan", {
-    method: "POST",
-    body: formData
-  })  
-    .then(res => res.json())
-    .then(data => {
-      scannedData = data;
-      document.getElementById("name").textContent = data.name || "-";
-      document.getElementById("cardNumber").textContent = data.cardNumber || "-";
-      document.getElementById("expiry").textContent = data.expiry || "-";
-      document.getElementById("qualifications").textContent = data.qualifications || "-";
-      document.getElementById("preview").src = data.imageUrl || "";
-      document.getElementById("result").style.display = "block";
-    })
-    .catch(err => {
-      console.error(err);
-      alert("❌ Scan failed.");
+  try {
+    const response = await fetch("http://127.0.0.1:5000/scan", {
+      method: "POST",
+      body: formData
     });
+
+    const data = await response.json();
+    if (data.error) throw new Error(data.error);
+    
+    scannedData = data;
+
+    document.getElementById("name").textContent = data.name || "-";
+    document.getElementById("cardNumber").textContent = data.cardNumber || "-";
+    document.getElementById("expiry").textContent = data.expiry || "-";
+    document.getElementById("qualifications").textContent = data.qualifications || "-";
+    document.getElementById("preview").src = data.imageUrl || "";
+    document.getElementById("result").style.display = "block";
+
+  } catch (err) {
+    console.error(err);
+    alert("❌ Scan failed: " + err.message);
+  }
 }
 
 function addToTrainingMatrix() {
