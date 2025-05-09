@@ -11,7 +11,6 @@
       margin: 0;
       padding: 20px;
     }
-
     .section {
       background: white;
       padding: 20px;
@@ -19,52 +18,35 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       margin-bottom: 30px;
     }
-
-    h2 {
-      margin-top: 0;
-    }
-
+    h2 { margin-top: 0; }
     input[type="file"], button {
       padding: 10px;
       margin-top: 10px;
       display: block;
     }
-
     #cardPreview {
       margin-top: 10px;
       max-height: 120px;
       border: 1px solid #ccc;
     }
-
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 20px;
     }
-
     th, td {
       padding: 12px;
       border: 1px solid #ddd;
       text-align: center;
     }
-
     th {
       background: #ff6600;
       color: white;
     }
-
     @media (max-width: 600px) {
-      body {
-        padding: 10px;
-      }
-
-      .section {
-        padding: 15px;
-      }
-
-      th, td {
-        font-size: 14px;
-      }
+      body { padding: 10px; }
+      .section { padding: 15px; }
+      th, td { font-size: 14px; }
     }
   </style>
 </head>
@@ -97,15 +79,12 @@
           <th>Preview</th>
         </tr>
       </thead>
-      <tbody>
-        <!-- Rows added here -->
-      </tbody>
+      <tbody></tbody>
     </table>
   </div>
 
   <script>
-    // ✅ CHANGE THIS if deploying somewhere else
-    const BACKEND_URL = 'https://smartsite-mvp-de16b70f49d2.herokuapp.com';
+    const BACKEND_URL = "https://smartsite-mvp-de16b70f49d2.herokuapp.com/scan";
 
     let scannedData = null;
 
@@ -117,15 +96,10 @@
       formData.append("image", fileInput.files[0]);
 
       try {
-        const response = await fetch(`${BACKEND_URL}/scan`, {
+        const response = await fetch(BACKEND_URL, {
           method: "POST",
           body: formData
         });
-
-        if (!response.ok) {
-          const errorText = await response.text();
-          throw new Error(`Error ${response.status}: ${errorText}`);
-        }
 
         const data = await response.json();
 
@@ -142,7 +116,7 @@
         document.getElementById("qualifications").textContent = data.qualifications || "-";
         document.getElementById("cardPreview").src = data.imageUrl || "";
       } catch (err) {
-        alert("❌ Error connecting to backend. Details in console.");
+        alert("❌ Error connecting to backend.");
         console.error(err);
       }
     }
@@ -165,5 +139,6 @@
       document.getElementById("cardInput").value = '';
     }
   </script>
+
 </body>
 </html>
