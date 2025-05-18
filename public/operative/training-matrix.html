@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Training Matrix</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .header {
+      padding: 20px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 90%;
+      margin: auto;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+      background-color: orange;
+      color: white;
+    }
+    .scan-section {
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h2>📸 Upload & Scan CSCS Card</h2>
+    <input type="file" id="fileInput" />
+    <button onclick="scanCard()">Scan</button>
+  </div>
+
+  <div class="scan-section">
+    <h2>📋 Training Matrix</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Qualification</th>
+          <th>Expiry</th>
+          <th>Preview</th>
+        </tr>
+      </thead>
+      <tbody id="matrixBody"></tbody>
+    </table>
+  </div>
+
+  <script>
+    const backendUrl = "https://smartsite-mvp-de16b70f49d2.herokuapp.com"; // ✅ LIVE backend
+
+    function scanCard() {
+      const fileInput = document.getElementById("fileInput");
+      const file = fileInput.files[0];
+
+      if (!file) {
+        alert("Please upload a CSCS card image first.");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("image", file);
+
+      fetch(`${backendUrl}/scan`, {
+        method: "POST",
+        body: formData,
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.error) throw new Error(data.error);
+
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${data.name}</td>
+            <td>${data.qualifications}</td>
+            <td>${data.expiry}</td>
+            <td><img src="${backendUrl}${data.imageUrl}" width="100"/></td>
+          `;
+          document.getElementById("matrixBody").appendChild(row);
+        })
+        .catch(err => {
+          console.error(err);
+          alert("❌ Could not connect to backend.");
+        });
+    }
+  </script>
+</body>
+</html>
