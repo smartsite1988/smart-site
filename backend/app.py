@@ -8,19 +8,26 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.utils import secure_filename
 from dotenv import load_dotenv
 
+# Load environment variables
 load_dotenv()
-app = Flask(__name__)
 
-# CORS fix for all domains (can restrict later)
+app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-# Config
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+# 🔧 Fix Heroku postgres:// to postgresql:// for SQLAlchemy
+db_url = os.getenv('DATABASE_URL')
+if db_url and db_url.startswith('postgres://'):
+    db_url = db_url.replace('postgres://', 'postgresql://', 1)
+
+# Configure database
+app.config['SQLALCHEMY_DATABASE_URI'] = db_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Configure upload folder
 app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), 'uploads')
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
-# Database
+# Setup database
 db = SQLAlchemy(app)
 
 class Operative(db.Model):
@@ -45,6 +52,7 @@ def scan():
     filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     image.save(filepath)
 
+    # Dummy scan result
     dummy_result = {
         "name": "Jordan Graham",
         "cardNumber": "12345678",
@@ -53,6 +61,7 @@ def scan():
         "imageUrl": f"/uploads/{filename}"
     }
 
+    # Save to database
     operative = Operative(
         name=dummy_result['name'],
         card_number=dummy_result['cardNumber'],
