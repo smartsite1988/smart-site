@@ -1,34 +1,16 @@
+// FILE: public/js/scanner.js
+
 document.getElementById('file-input').addEventListener('change', (event) => {
   const file = event.target.files[0];
   const img = document.getElementById('uploaded-image');
   img.src = URL.createObjectURL(file);
+  img.style.display = 'block';
 });
-
-async function preprocessImage(img) {
-  const canvas = document.createElement('canvas');
-  const ctx = canvas.getContext('2d');
-  const scaleFactor = 1000 / img.width;
-
-  canvas.width = img.width * scaleFactor;
-  canvas.height = img.height * scaleFactor;
-
-  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-  const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  for (let i = 0; i < imgData.data.length; i += 4) {
-    const avg = (imgData.data[i] + imgData.data[i + 1] + imgData.data[i + 2]) / 3;
-    const binary = avg > 128 ? 255 : 0;
-    imgData.data[i] = imgData.data[i + 1] = imgData.data[i + 2] = binary;
-  }
-  ctx.putImageData(imgData, 0, 0);
-
-  return canvas.toDataURL('image/png');
-}
 
 function parseCardDetails(text) {
   const lines = text.split("\n").map(line => line.trim()).filter(line => line);
 
-  const nameRegex = /([A-Z][a-z]+)\s([A-Z][a-z]+)/;
+  const nameRegex = /([A-Z][a-z]+\s[A-Z][a-z]+)/;
   const numberRegex = /\b\d{6,}\b/;
   const dateRegex = /(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)?\s?(\d{4})/i;
   const qualRegex = /(Supervisor|Operator|Manager|Technical|Experienced.*|Skilled.*)/i;
@@ -65,22 +47,22 @@ document.getElementById('scan-button').onclick = async () => {
     return;
   }
 
-  const processedImg = await preprocessImage(img);
-
-  const worker = await Tesseract.createWorker({
-    logger: m => console.log(m)
-  });
-
+  const worker = await Tesseract.createWorker({ logger: m => console.log(m) });
+  await worker.load();
   await worker.loadLanguage('eng');
   await worker.initialize('eng');
 
-  const { data: { text } } = await worker.recognize(processedImg);
+  const { data: { text } } = await worker.recognize(img);
+  await worker.terminate();
+
   const details = parseCardDetails(text);
 
-  document.getElementById('name').innerText = details.name;
-  document.getElementById('number').innerText = details.number;
-  document.getElementById('expiry').innerText = details.expiry;
-  document.getElementById('qualifications').innerText = details.qualifications;
-
-  await worker.terminate();
+  const row = document.createElement('tr');
+  row.innerHTML = `
+    <td>${details.name}</td>
+    <td>${details.qualifications}</td>
+    <td>${details.expiry}</td>
+    <td>${details.number}</td>
+  `;
+  document.getElementById('matrix-body').appendChild(row);
 };
