@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/operative/training-matrix.html",
+      "destination": "/operative/training-matrix.html"
+    }
+  ]
+}
