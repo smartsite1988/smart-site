@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>SmartSite | Training Matrix + CSCS Scanner</title>
+  <title>SmartSite | Training Matrix</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
     body {
@@ -11,7 +11,6 @@
       margin: 0;
       padding: 20px;
     }
-
     .section {
       background: white;
       padding: 20px;
@@ -19,52 +18,30 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       margin-bottom: 30px;
     }
-
-    h2 {
-      margin-top: 0;
-    }
-
+    h2 { margin-top: 0; }
     input[type="file"], button {
       padding: 10px;
       margin-top: 10px;
       display: block;
     }
-
     #cardPreview {
       margin-top: 10px;
       max-height: 120px;
       border: 1px solid #ccc;
     }
-
     table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 20px;
     }
-
     th, td {
       padding: 12px;
       border: 1px solid #ddd;
       text-align: center;
     }
-
     th {
       background: #ff6600;
       color: white;
-    }
-
-    @media (max-width: 600px) {
-      body {
-        padding: 10px;
-      }
-
-      .section {
-        padding: 15px;
-      }
-
-      th, td {
-        font-size: 14px;
-      }
     }
   </style>
 </head>
@@ -74,15 +51,12 @@
     <h2>📸 Scan CSCS Card</h2>
     <input type="file" id="cardInput" accept="image/*" />
     <button onclick="scanCard()">Scan Card</button>
-
     <div id="scanResult" style="display:none;">
       <p><strong>Name:</strong> <span id="name">-</span></p>
       <p><strong>Card Number:</strong> <span id="cardNumber">-</span></p>
       <p><strong>Expiry:</strong> <span id="expiry">-</span></p>
       <p><strong>Qualification:</strong> <span id="qualifications">-</span></p>
-      <img id="cardPreview" src="" alt="Card Preview"/>
-      <br />
-      <button onclick="addToMatrix()">✅ Add to Matrix</button>
+      <img id="cardPreview" src="" alt="Card Preview" />
     </div>
   </div>
 
@@ -97,14 +71,13 @@
           <th>Preview</th>
         </tr>
       </thead>
-      <tbody>
-        <!-- Rows added here -->
-      </tbody>
+      <tbody></tbody>
     </table>
   </div>
 
   <script>
     const backendUrl = "https://smartsite-mvp-de16b70f49d2.herokuapp.com";
+
     let scannedData = null;
 
     async function scanCard() {
@@ -139,25 +112,6 @@
         console.error(err);
       }
     }
-
-    function addToMatrix() {
-      if (!scannedData) return;
-
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${scannedData.name || "-"}</td>
-        <td>${scannedData.qualifications || "-"}</td>
-        <td>${scannedData.expiry || "-"}</td>
-        <td><img src="${scannedData.imageUrl || ""}" alt="Preview" style="height:40px;" /></td>
-      `;
-      document.querySelector("#trainingTable tbody").appendChild(row);
-
-      alert("✅ Added to training matrix!");
-      scannedData = null;
-      document.getElementById("scanResult").style.display = "none";
-      document.getElementById("cardInput").value = '';
-    }
   </script>
-
 </body>
 </html>
