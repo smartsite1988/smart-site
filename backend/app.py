@@ -1,4 +1,5 @@
 # FILE: backend/app.py
+
 import os
 import uuid
 from flask import Flask, request, jsonify, send_from_directory
@@ -9,13 +10,17 @@ from dotenv import load_dotenv
 
 load_dotenv()
 app = Flask(__name__)
-CORS(app)
 
+# CORS fix for all domains (can restrict later)
+CORS(app, resources={r"/*": {"origins": "*"}})
+
+# Config
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = os.path.join(os.getcwd(), 'uploads')
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
+# Database
 db = SQLAlchemy(app)
 
 class Operative(db.Model):
@@ -40,7 +45,6 @@ def scan():
     filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     image.save(filepath)
 
-    # Simulated scan result
     dummy_result = {
         "name": "Jordan Graham",
         "cardNumber": "12345678",
@@ -48,7 +52,7 @@ def scan():
         "qualifications": "Supervisor",
         "imageUrl": f"/uploads/{filename}"
     }
-    
+
     operative = Operative(
         name=dummy_result['name'],
         card_number=dummy_result['cardNumber'],

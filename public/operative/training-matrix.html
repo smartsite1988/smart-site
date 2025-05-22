@@ -2,13 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Training Matrix</title>
+  <title>SmartSite Training Matrix</title>
   <style>
     body {
       font-family: Arial, sans-serif;
     }
-    .header {
+    .header, .scan-section {
       padding: 20px;
+      text-align: center;
     }
     table {
       border-collapse: collapse;
@@ -18,14 +19,10 @@
     th, td {
       border: 1px solid #ccc;
       padding: 10px;
-      text-align: center;
     }
     th {
       background-color: orange;
       color: white;
-    }
-    .scan-section {
-      padding: 20px;
     }
   </style>
 </head>
@@ -52,7 +49,7 @@
   </div>
 
   <script>
-    const backendUrl = "https://smartsite-mvp-de16b70f49d2.herokuapp.com"; // ✅ LIVE backend
+    const backendUrl = "https://smartsite-mvp-de16b70f49d2.herokuapp.com";
 
     function scanCard() {
       const fileInput = document.getElementById("fileInput");
@@ -79,7 +76,7 @@
             <td>${data.name}</td>
             <td>${data.qualifications}</td>
             <td>${data.expiry}</td>
-            <td><img src="${backendUrl}${data.imageUrl}" width="100"/></td>
+            <td><img src="${backendUrl}${data.imageUrl.startsWith('/') ? data.imageUrl : '/' + data.imageUrl}" width="100"/></td>
           `;
           document.getElementById("matrixBody").appendChild(row);
         })
