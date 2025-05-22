@@ -49,6 +49,7 @@
   </div>
 
   <script>
+    // ✅ Use your exact backend Heroku URL
     const backendUrl = "https://smartsite-mvp-de16b70f49d2.herokuapp.com";
 
     function scanCard() {
@@ -67,10 +68,13 @@
         method: "POST",
         body: formData,
       })
-        .then(res => res.json())
+        .then(res => {
+          if (!res.ok) {
+            throw new Error("Error connecting to backend.");
+          }
+          return res.json();
+        })
         .then(data => {
-          if (data.error) throw new Error(data.error);
-
           const row = document.createElement("tr");
           row.innerHTML = `
             <td>${data.name}</td>
@@ -82,7 +86,7 @@
         })
         .catch(err => {
           console.error(err);
-          alert("❌ Could not connect to backend.");
+          alert("❌ Error connecting to backend.");
         });
     }
   </script>
